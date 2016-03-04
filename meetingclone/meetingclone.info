@@ -1,0 +1,14 @@
+name = Meeting clone
+description = "Creates 12 copies of a meeting."
+package = "Interlated"
+
+core = 7.x
+version = VERSION
+
+dependencies[] = simple_dialog
+
+files[] = includes/MeetingCloneReplication.inc
+files[] = includes/MeetingCloneCreateMeetings.inc
+files[] = includes/MeetingCloneJournal.inc
+; Permissions helper to views
+files[] = includes/MeetingClonePerms.inc

@@ -1,0 +1,101 @@
+  
+<?php
+
+/**
+ * jrobens@interlated.com.au
+ */
+function meetingclone_enable() {
+  variable_set( 'meetingclone_date_field', 'field_meeting_date');
+  variable_set( 'meetingclone_submission_cutoff_field', 'field_submission_cutoff');
+}
+
+/*
+ * Clean up variables on uninstall.
+ */
+
+function meetingclone_uninstall() {
+  variable_del('meetingclone_template_node');
+  variable_del('meetingclone_date_field');
+  variable_del('meetingclone_submission_cutoff_field');
+  
+  drupal_uninstall_schema('meetingclone_history ');
+}
+
+function meetingclone_disable() {
+  
+}
+
+/*
+  function meetingclone_field_schema($field) {
+  $columns = array(
+  'rgb' => array('type' => 'varchar', 'length' => 255, 'not null' => FALSE),
+  );
+  $indexes = array(
+  'rgb' => array('rgb'),
+  );
+  return array(
+  'columns' => $columns,
+  'indexes' => $indexes,
+  );
+  }
+ * 
+ */
+
+// drush devel-reinstall -y meetingclone
+
+/**
+ * Implementation of hook_schema().
+ * 
+ * For the member product list.
+ */
+function meetingclone_schema() {
+  $schema = array();
+
+  $schema['meetingclone_history'] = array(
+    'description' => 'Replication ids and replicated nodes.',
+    'fields' => array(
+      'rid' => array(
+        'description' => 'The primary identifier for this replication',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'repid' => array(
+        'type' => 'varchar',
+        'description' => 'Replication Id',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'description' => 'Replicated node',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'created' => array(
+        'description' => 'created',
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('rid'),
+    'indexes' => array(
+      'repid' => array('repid'),
+    ),
+    'export' => array(
+      'key' => 'rid',
+      'identifier' => 'replication',
+      'primary key' => 'rid',
+      'api' => array(
+        'owner' => 'meetingclone',
+        'api' => 'meetingclone',
+        'minimum_version' => 3,
+        'current_version' => 3,
+      ),
+    ),
+  );
+
+
+  return $schema;
+}

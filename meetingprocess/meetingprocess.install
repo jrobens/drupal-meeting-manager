@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the Organic groups module.
+ */
+
+/**
+ * drush devel-reinstall -y meetingprocess
+ * 
+ * drush dis -y meetingprocess
+ * drush pm-uninstall -y meetingprocess
+ * drush en -y meetingprocess
+ * 
+ * Implements hook_install().
+ */
+function meetingprocess_install() {
+  variable_set(OGNOTIFY_MEETING_TYPES, 'meeting_node_form');
+}
+
+// mail system variable
+//a:3:{s:14:"default-system";s:17:"DefaultMailSystem";s:8:"htmlmail";s:14:"HTMLMailSystem";s:19:"meetingprocess_invitation";s:18:"OgNotifyMailSystem";}
+function meetingprocess_enable() {
+}
+
+function meetingprocess_disable() {
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function meetingprocess_uninstall() {
+  
+}
+

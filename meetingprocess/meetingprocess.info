@@ -1,0 +1,21 @@
+name = Meeting Process
+description = "Manage the automated steps that are part of meetings."
+package = "Interlated"
+dependencies[] = og
+dependencies[] = entity
+dependencies[] = list
+dependencies[] = notifications
+dependencies[] = messaging
+dependencies[] = options
+dependencies[] = htmlmail
+dependencies[] = mailsystem
+
+core = 7.x
+version = VERSION
+
+
+
+
+
+
+

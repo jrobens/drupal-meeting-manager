@@ -1,0 +1,62 @@
+<?php
+
+/*
+ * @file
+
+ * 
+ * jrobens@interlated.com.au
+ * 201202
+ * 
+ */
+
+
+// Load all Field module hooks for Organic groups.
+// require(drupal_get_path('module', 'meetingprocess') . '/meetingprocess.notifyfield.inc');
+
+define('MEETINGPROCESS_MODULE_NAME', 'meetingprocess');
+define('MEETINGPROCESS_AGENDA_CREATE_PERMISSION', 'create agenda_item content');
+
+/**
+ * Implements hook_help().
+ */
+function meetingprocess_help($path, $arg) {
+  // Provide messages for og-migrate module.
+
+  switch ($path) {
+    case 'meetingprocess':
+      $path = drupal_get_path('module', 'og');
+      $output = 'Rules for meetings.';
+      $output .= '<p>' . t("Sets the dataes in meetings.") . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * 
+ * @param array $form
+ * @param type $form_state
+ * @param type $form_id
+ */
+function meetingprocess_form_meeting_node_form_alter(&$form, &$form_state, $form_id) {
+  $form['#attached']['js'][] =
+      drupal_add_js(drupal_get_path('module', 'meetingprocess') . '/scripts/meetingprocess.js', array('type' => 'file', 'scope' => 'footer', 'weight' => 5, 'defer' => TRUE));
+
+
+  // Check that I have access to the group to assign group-access.
+}
+
+/**
+ * Check to see if the viewer of a meeting has member access. If not cannot add agenda item.
+ * 
+ * @param type $node
+ * @param type $view_mode
+ * @param type $langcode
+ */
+function meetingprocess_node_view($node, $view_mode, $langcode) {
+  if (is_object($node) && ($node->type == 'meeting')) {
+    global $user;
+    if (!user_access(MEETINGPROCESS_AGENDA_CREATE_PERMISSION)) {
+      drupal_set_message("Viewing meeting, but you don't have member access. You won't be able to add agenda items, please contact a site administrator.", 'warning', FALSE);
+    }
+  }
+}
